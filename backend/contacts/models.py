@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.utils import timezone
+from users.models import CustomUser
 
 
 class Address(models.Model):
@@ -20,8 +21,8 @@ class Contact(models.Model):
     phoneNumber = models.CharField(max_length=15, blank=True, null=True)
 
     # Reference to the Address model
-    address = models.OneToOneField(
-        Address, on_delete=models.CASCADE, blank=True, null=True)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='contacts', db_column='userId')
 
     createdAt = models.DateTimeField(default=timezone.now)
     updatedAt = models.DateTimeField(default=timezone.now)

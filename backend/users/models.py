@@ -4,7 +4,8 @@ from django.utils import timezone
 
 
 class User(models.Model):
-    userId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    # userId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    userId = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     userName = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, unique=True, blank=True, null=True)
     password = models.TextField(blank=True, null=True)
@@ -34,9 +35,6 @@ class User(models.Model):
 
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser
-# from django.db import models
-# from django.utils import timezone
-# import uuid
 
 
 class UserManager(BaseUserManager):
@@ -57,6 +55,7 @@ class UserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     userId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    username = models.CharField(max_length=255, unique=False)
     email = models.EmailField(max_length=100, unique=True)
     password = models.TextField()
     createdAt = models.DateTimeField(default=timezone.now)

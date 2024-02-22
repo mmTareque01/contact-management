@@ -8,8 +8,10 @@ from backend.config.responseConfig import resStatus, resBody
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.hashers import check_password
 from ..authentication import EmailBackend
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 @api_view(['POST'])
 def userLogin(request):
     try:

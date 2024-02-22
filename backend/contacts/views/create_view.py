@@ -6,26 +6,23 @@ from backend.config.responseConfig import resStatus, resBody
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from users.authentication import EmailBackend,authenticate_token
+from users.authentication import EmailBackend, authenticate_token
 
 
 @api_view(['POST'])
-# @authentication_classes([JWTAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def CreateContact(request):
     try:
-        access_token = request.headers.get('Authorization').split(' ')[1]
-        user = authenticate_token(access_token)
-        print(user)
         conatct = request.data
-        # backend = EmailBackend()
-        # user = backend.validate_token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA4NjA4NzU2LCJpYXQiOjE3MDg2MDg0NTYsImp0aSI6ImYzMTMxNjk1Mzc4MDQ5ZWViNmQzZDVmOTJkOTIxNWFlIiwidXNlcl9pZCI6MTF9.lB9BqzOkmwyfP_LSx7YQXZCDtTg4mS71QaMi6CQ3PCc")
-        # print("user : "+ user)
+        user = request.user
+
         isValidInputData = ValidateContactData(data=conatct)
         if not isValidInputData.is_valid():
             return response.Response(resBody({}, resStatus["invalidInput"], isValidInputData.errors), status=status.HTTP_401_UNAUTHORIZED)
 
         newContactData = CreateContactSerializer(data={
+            "user": user.id,
             "name": conatct["name"],
             "email": conatct["email"],
             "phoneNumber": conatct["phoneNumber"],

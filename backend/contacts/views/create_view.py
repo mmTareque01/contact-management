@@ -6,7 +6,6 @@ from backend.config.responseConfig import resStatus, resBody
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from users.authentication import EmailBackend, authenticate_token
 
 
 @api_view(['POST'])

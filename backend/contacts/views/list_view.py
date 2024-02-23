@@ -14,7 +14,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 def ContactList(request):
     # need to implement pagination over here
     try:
-        contacts = Contact.objects.filter(isDeleted=False)
+        contacts = Contact.objects.filter(isDeleted=False, user=request.user.id)
         extractedContacts = ContactListSerializer(contacts, many=True).data
 
         if not len(extractedContacts):

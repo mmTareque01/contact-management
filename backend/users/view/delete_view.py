@@ -1,13 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework import generics, response, status
-from ..models import User
+from ..models import CustomUser
 # from ..serializers.delete_serializers import
 
 
 @api_view(['DELETE'])
 def DeleteUser(request, id):
     try:
-        user = User.objects.get(userId=id)
+        user = CustomUser.objects.get(userId=id)
         user.delete()
         return response.Response({"detail": "Product successfully deleted."}, status=status.HTTP_204_NO_CONTENT)
     except Exception as e:

@@ -1,12 +1,9 @@
 from rest_framework import serializers
-from ..models import User
+from ..models import CustomUser
+
 
 class BaseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        exclude = ['id', 'isDeleted', 'createdAt', 'updatedAt']
-
-
-
-
-
+        model = CustomUser
+        # exclude = ['isDeleted', 'createdAt', 'updatedAt']
+        exclude = []

@@ -1,12 +1,13 @@
 from rest_framework.decorators import api_view
-from rest_framework import generics, response, status
-from ..models import User
+from rest_framework import response, status
+from ..models import CustomUser
 from ..serializers.update_password_serializers import UpdatePasswordSerializer
+
 
 @api_view(['PATCH'])
 def UpdatePassword(request, id):
     try:
-        user = User.objects.get(userId=id)
+        user = CustomUser.objects.get(userId=id)
         updateUserData = UpdatePasswordSerializer(user, data={
             "password": request.data["password"],
         })
@@ -18,4 +19,3 @@ def UpdatePassword(request, id):
     except Exception as e:
         print(e)
         return response.Response({"detail": "failed"}, status=status.HTTP_400_BAD_REQUEST)
-

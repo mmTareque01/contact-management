@@ -1,13 +1,11 @@
 from exifread import logger
 from rest_framework.decorators import api_view
-from rest_framework import generics, response, status
+from rest_framework import  response, status
 from ..serializers.login_serializers import LoginSerializer
 from ..serializers.profile_serializers import UserProfileSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from backend.config.responseConfig import resStatus, resBody
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.hashers import check_password
-from ..authentication import EmailBackend
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -16,7 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 def userLogin(request):
     try:
         login_data = request.data
-        print(login_data)
         login_serializer = LoginSerializer(data=login_data)
         if not login_serializer.is_valid():
             return response.Response(resBody({}, resStatus["invalidInput"], login_serializer.errors), status=status.HTTP_401_UNAUTHORIZED)

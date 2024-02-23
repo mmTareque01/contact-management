@@ -1,13 +1,13 @@
 from rest_framework.decorators import api_view
 from rest_framework import generics, response, status
-from ..models import User
+from ..models import CustomUser
 from ..serializers.update_serializers import UserUpdateSerializer
 
 
 @api_view(['PUT'])
 def UpdateUser(request, id):
     try:
-        user = User.objects.get(userId=id)
+        user = CustomUser.objects.get(userId=id)
         updateUserData = UserUpdateSerializer(user, data={
             "userName": request.data["userName"],
             "email": request.data["email"],

@@ -1,39 +1,6 @@
 import uuid
 from django.db import models
 from django.utils import timezone
-
-
-class User(models.Model):
-    # userId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    userId = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    userName = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(max_length=100, unique=True, blank=True, null=True)
-    password = models.TextField(blank=True, null=True)
-
-
-    createdAt = models.DateTimeField(default=timezone.now)
-    updatedAt = models.DateTimeField(default=timezone.now)
-    isDeleted = models.BooleanField(default=False)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_anonymous = models.BooleanField(default=False)
-    is_authenticated = models.BooleanField(default=False)
-
-
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
-
-    def save(self, *args, **kwargs):
-        self.updatedAt = timezone.now()
-        super().save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        self.isDeleted = True
-        self.save()
-
-    def __str__(self):
-        return f"{self.userName} ({self.email})"
-
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser
 
 
@@ -66,11 +33,9 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-    # REQUIRED_FIELDS = ['userName']
 
     def save(self, update_fields=None, *args, **kwargs):
         if update_fields is not None and 'password' in update_fields:
-            # Remove 'password' from update_fields if present
             update_fields.remove('password')
         self.updatedAt = timezone.now()
         super().save(update_fields=update_fields, *args, **kwargs)

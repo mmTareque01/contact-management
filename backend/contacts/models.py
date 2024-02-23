@@ -17,12 +17,14 @@ class Address(models.Model):
 class Contact(models.Model):
     CId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=False)
     phoneNumber = models.CharField(max_length=15, blank=True, null=True)
 
     # Reference to the Address model
-    address = models.OneToOneField(Address, on_delete=models.CASCADE, blank=True, null=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='contacts', db_column='userId')
+    address = models.OneToOneField(
+        Address, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name='contacts', db_column='userId')
 
     createdAt = models.DateTimeField(default=timezone.now)
     updatedAt = models.DateTimeField(default=timezone.now)
